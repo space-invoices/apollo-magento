@@ -48,11 +48,11 @@ You can install the module via composer or manually by adding it to the app/code
 Via composer:
 
 ``` bash
-composer require apollo/apollo-magento;
+composer require space-invoices/apollo-magento
 ```
 
 ``` bash
-php bin/magento setup:upgrade;
+php bin/magento setup:upgrade
 ```
 
 # Requirements
