@@ -7,5 +7,13 @@
   "require": {
     "php": ">=7.0",
     "space-invoices/space-invoices-php": "^1.0"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Studio404\\Apollo\\": ""
+    }
   }
 }
