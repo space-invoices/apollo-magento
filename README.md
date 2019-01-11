@@ -57,7 +57,7 @@ php bin/magento setup:upgrade
 
 # Requirements
 
-* php 7.2 or higher
+* php 7.0 or higher
 * Magetno 2.0 or higher
 
 
