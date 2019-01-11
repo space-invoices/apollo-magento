@@ -1,5 +1,5 @@
 {
-  "name": "apollo/apollo-magento",
+  "name": "space-invoices/apollo-magento",
   "description": "Apollo invoices/pdf creator for Magento.",
   "type": "magento2-module",
   "version": "1.0",

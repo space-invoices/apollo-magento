@@ -61,4 +61,4 @@ php bin/magento setup:upgrade;
 * Magetno 2.0 or higher
 
 
-Apollo is using [Space invoices API](url=https://spaceinvoices.com/page/home), so for any additional developer information about extension implementation you can check our [Space invoices API PHP documentation](url=https://docs.spaceinvoices.com/?php).
+Apollo is using [Space invoices API](https://spaceinvoices.com/page/home), so for any additional developer information about extension implementation you can check our [Space invoices API PHP documentation](https://docs.spaceinvoices.com/?php).
