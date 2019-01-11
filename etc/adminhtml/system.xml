@@ -1,0 +1,56 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="apollo_settings" translate="label" sortOrder="1">
+            <label>Apollo Settings</label>
+        </tab>
+        <section id="apollo_settings" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>General</label>
+            <tab>apollo_settings</tab>
+            <resource>Studio404_Apollo::config_system</resource>
+            <group id="general" translate="label comment" value="1" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Tokens Options</label>
+                <comment>You can get your token and organization ID at Apollo official page. Token and organization fields are required, in order for plugin to work.</comment>
+                <field id="sandbox_mode" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sandbox mode</label>
+                    <comment>Enables sandbox mode, all documents created will be created on your sandbox account. You can create your sandbox account at https://test.getapollo.io</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="apollo_token_sandbox" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sandbox Apollo token</label>
+                </field>
+                <field id="apollo_organization_sandbox" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sandbox Organization ID</label>
+                </field>
+                <field id="apollo_token" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Apollo token</label>
+                </field>
+                <field id="apollo_organization" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Organization ID</label>
+                </field>
+            </group>
+            <group id="apollo_mail_settings" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Mailing Options</label>
+                <comment>Emails, containing PDFs will be sent sepretly from default order emails sent by Magento or other plugins.</comment>
+                <field id="send_invoice" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send invoice automatically</label>
+                    <comment>Invoice will be automatically created, marked as PAID and attached to order, if order status matches chosen status. Note that invoice should be sent after payment was already confirmed.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_status" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order status</label>
+                    <comment>Invoice will be sent when new order with chosen status is created.</comment>
+                    <source_model>Magento\Sales\Model\ResourceModel\Order\Status\Collection</source_model>
+                </field>
+                <field id="send_estimate" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send estimate automatically</label>
+                    <comment>Only sends estimates if order payment type is "Direct bank transfer".</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="pdf_msg" translate="label comment" type="textarea" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Mail message</label>
+                    <comment>This message will be displayed within email containing PDF document.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

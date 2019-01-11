@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+     <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+        <default>
+            <apollo_settings>
+                <apollo_mail_settings>
+                    <pdf_msg>Thank you for your order. You can find the document PDF in attachment.</pdf_msg>
+                </apollo_mail_settings>
+            </apollo_settings>
+        </default>
+    </config>

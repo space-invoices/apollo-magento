@@ -1,0 +1,85 @@
+<style>
+  table.apollo.order-page-meta-box.pdf-invoice {
+    margin-bottom: 10px;
+  }
+
+  table.apollo.order-page-meta-box.pdf-invoice tr td:last-child {
+    font-weight: bold;
+    padding-left: 1rem;
+  }
+
+  table.apollo.order-page-meta-box.pdf-invoice tr .pointer {
+    cursor: pointer;
+  }
+</style>
+
+<section class="admin__page-section order-view-billing-shipping">
+  <div class="admin__page-section-title">
+    <span class="title">Apollo</span>
+  </div>
+  <div class="admin__page-section-content">
+    <div class="admin__page-section-item order-payment-method">
+      <div class="admin__page-section-item-title">
+        <span class="title">Invoice</span>
+      </div>
+      <?php if (!$this->invoiceData): ?>
+        <div class="admin__page-section-item-content">
+          Invoice should be created AFTER order is already paid.<br>
+          <a onclick="showLoader()" href="<?= $this->generateInvoiceUrl ?>">Generate invoice</a>
+        </div>
+      <?php else: ?>
+        <div class="admin__page-section-item-content">
+          <table class="order-page-meta-box pdf-invoice apollo" style="border-bottom: 1px solid #ccc;">
+            <tbody>
+              <tr>
+                <td>Invoice number:</td>
+                <td><?= $this->invoiceData['number'] ?></td>
+              </tr>
+              <tr>
+                <td>Sent to costumer:</td>
+                <td><?= $this->invoiceData['sent'] === '1' ? 'Yes' : 'No'?></td>
+              </tr>
+            </tbody>
+          </table>
+          <a target="_blank" href="<?= $this->invoiceData['apollo_url'] ?>">View on Apollo</a><br>
+          <a target="_blank" href="<?= $this->invoiceData['view_pdf'] ?>">View PDF</a><br>
+          <a title="Invoice will be sent as email. You can email message in Apollo extension settings." onclick="showLoader()" href="<?= $this->invoiceData['send_mail'] ?>">Send PDF to costumer</a>
+        </div>
+      <?php endif; ?>
+    </div>
+    <div class="admin__page-section-item order-shipping-method">
+      <div class="admin__page-section-item-title">
+        <span class="title">Estimate</span>
+      </div>
+      <?php if (!$this->estimateData): ?>
+        <div class="admin__page-section-item-content">
+          <a onclick="showLoader()" href="<?= $this->generateEstimateUrl ?>">Generate estimate</a>
+        </div>
+      <?php else: ?>
+        <div class="admin__page-section-item-content">
+          <table class="order-page-meta-box pdf-invoice apollo" style="border-bottom: 1px solid #ccc;">
+            <tbody>
+              <tr>
+                <td>Estimate number:</td>
+                <td><?= $this->estimateData['number'] ?></td>
+              </tr>
+              <tr>
+                <td>Sent to costumer:</td>
+                <td><?= $this->estimateData['sent'] === '1' ? 'Yes' : 'No'?></td>
+              </tr>
+            </tbody>
+          </table>
+          <a target="_blank" href="<?= $this->estimateData['apollo_url'] ?>">View on Apollo</a><br>
+          <a target="_blank" href="<?= $this->estimateData['view_pdf'] ?>">View PDF</a><br>
+          <a title="Estimate will be sent as email. You can email message in Apollo extension settings." onclick="showLoader()" href="<?= $this->estimateData['send_mail'] ?>">Send PDF to costumer</a>
+        </div>
+      <?php endif; ?>
+    </div>
+  </div>
+</section>
+
+<script>
+function showLoader() {
+  jQuery('body').loader('show');
+}
+</script>
