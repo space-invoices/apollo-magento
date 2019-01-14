@@ -1,6 +1,6 @@
 <?php
 namespace Studio404\Apollo\Observer;
-require_once './app/code/Studio404/Apollo/Model/spaceinvoices.php';
+require_once dirname(__FILE__).'../../Model/spaceinvoices.php';
 
 use \Magento\Framework\Event\Observer;
 use \Magento\Framework\Event\ObserverInterface;

@@ -5,8 +5,7 @@
   "version": "1.0",
   "license": "Apache-2.0",
   "require": {
-    "php": ">=7.0",
-    "space-invoices/space-invoices-php": "^1.0"
+    "php": ">=7.0"
   },
   "autoload": {
     "files": [

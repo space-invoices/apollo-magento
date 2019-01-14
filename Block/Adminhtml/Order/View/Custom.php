@@ -1,6 +1,6 @@
 <?php
 namespace Studio404\Apollo\Block\Adminhtml\Order\View;
-require_once './app/code/Studio404/Apollo/Model/spaceinvoices.php';
+require_once dirname(__FILE__).'../../../../../Model/spaceinvoices.php';
 
 class Custom extends \Magento\Backend\Block\Template
 {
