@@ -8,12 +8,12 @@
     padding-left: 1rem;
   }
 
-  table.apollo.order-page-meta-box.pdf-invoice tr .pointer {
+  .apollo a {
     cursor: pointer;
   }
 </style>
 
-<section class="admin__page-section order-view-billing-shipping">
+<section class="admin__page-section order-view-billing-shipping apollo">
   <div class="admin__page-section-title">
     <span class="title">Apollo</span>
   </div>
@@ -25,7 +25,7 @@
       <?php if (!$this->invoiceData): ?>
         <div class="admin__page-section-item-content">
           Invoice should be created AFTER order is already paid.<br>
-          <a onclick="showLoader()" href="<?= $this->generateInvoiceUrl ?>">Generate invoice</a>
+          <a onclick="showLoader('<?= $this->paid ?>', '<?= $this->generateInvoiceUrl ?>')">Generate invoice</a>
         </div>
       <?php else: ?>
         <div class="admin__page-section-item-content">
@@ -43,7 +43,7 @@
           </table>
           <a target="_blank" href="<?= $this->invoiceData['apollo_url'] ?>">View on Apollo</a><br>
           <a target="_blank" href="<?= $this->invoiceData['view_pdf'] ?>">View PDF</a><br>
-          <a title="Invoice will be sent as email. You can email message in Apollo extension settings." onclick="showLoader()" href="<?= $this->invoiceData['send_mail'] ?>">Send PDF to costumer</a>
+          <a title="Invoice will be sent as email. You can email message in Apollo extension settings." onclick="showLoader('true', '<?= $this->invoiceData['send_mail'] ?>')" >Send PDF to costumer</a>
         </div>
       <?php endif; ?>
     </div>
@@ -53,7 +53,7 @@
       </div>
       <?php if (!$this->estimateData): ?>
         <div class="admin__page-section-item-content">
-          <a onclick="showLoader()" href="<?= $this->generateEstimateUrl ?>">Generate estimate</a>
+          <a onclick="showLoader('true', '<?= $this->generateEstimateUrl ?>')">Generate estimate</a>
         </div>
       <?php else: ?>
         <div class="admin__page-section-item-content">
@@ -71,7 +71,7 @@
           </table>
           <a target="_blank" href="<?= $this->estimateData['apollo_url'] ?>">View on Apollo</a><br>
           <a target="_blank" href="<?= $this->estimateData['view_pdf'] ?>">View PDF</a><br>
-          <a title="Estimate will be sent as email. You can email message in Apollo extension settings." onclick="showLoader()" href="<?= $this->estimateData['send_mail'] ?>">Send PDF to costumer</a>
+          <a title="Estimate will be sent as email. You can email message in Apollo extension settings." onclick="showLoader('true', '<?= $this->estimateData['send_mail'] ?>')">Send PDF to costumer</a>
         </div>
       <?php endif; ?>
     </div>
@@ -79,7 +79,18 @@
 </section>
 
 <script>
-function showLoader() {
-  jQuery('body').loader('show');
+function showLoader(paid, url) {
+  if (paid !== 'true') {
+    var r = confirm("This order is not yet paid. Invoice should be created AFTER payment. Are you sure you want to create invoice?");
+    if (r == true) {
+      jQuery('body').loader('show');
+      window.location.replace(url);
+    } else {
+      jQuery('body').loader('hide');
+    }
+  } else {
+    jQuery('body').loader('show');
+    window.location.replace(url);
+  }
 }
 </script>

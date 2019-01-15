@@ -32,13 +32,13 @@ class OrderData implements ObserverInterface
       $msg = $this->mailSettings['pdf_msg'];
 
 
-      if ($order->getStatus() === $this->mailSettings['order_status'] && $this->mailSettings['send_invoice'] === '1') {
+      if ($paymentType === 'banktransfer' && $this->mailSettings['send_estimate'] === '1') {
+        $documentData = generateApolloDocument('estimate', $order, $itemsData);
+        sendPdf($order, 'estimate', $this->storeName, $msg);
+      } else if ($order->getStatus() === $this->mailSettings['order_status'] && $this->mailSettings['send_invoice'] === '1') {
         $documentData = generateApolloDocument('invoice', $order, $itemsData);
         sendPdf($order, 'invoice', $this->storeName, $msg);
 
-      } else if ($paymentType === 'banktransfer' && $this->mailSettings['send_estimate'] === '1') {
-        $documentData = generateApolloDocument('estimate', $order, $itemsData);
-        sendPdf($order, 'estimate', $this->storeName, $msg);
       }
     }
 }

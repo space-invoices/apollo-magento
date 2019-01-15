@@ -45,48 +45,47 @@ function generateApolloDocument($type, $orderData, $items) {
   foreach ($items as $item_data) {
     $product = $item_data->getData();
 
-    $SI_products_data[] = array(
+    $SI_product = array(
       'name'     => $product['name'],
       'unit'     => 'item',
       'quantity' => $product['qty_ordered'],
-      'price'    => $product['base_price'],
-      'currencyId' => $orderInfo['order_currency_code'],
+      'price'    => $product['price'],
       '_documentItemTaxes' => array(array('rate' => $product['tax_percent']))
-    );
-  }
+      );
+
+      if ($product['discount_percent'] !== '0.0000') {
+        $SI_product['discount'] = $product['discount_percent'];
+      } else if ($product['discount_amount'] !== '0.0000') {
+        $SI_product['discountIsAmount'] = true;
+        $SI_product['discount'] = $product['discount_amount'];
+      }
+
+      $SI_products_data[] = $SI_product;
+    }
 
   if ($orderInfo['shipping_method'] != '') {
-    if ($orderInfo['shipping_amount'] === $orderInfo['shipping_incl_tax']) {
-      $SI_products_data[] = array(
-        'name'     => $orderInfo['shipping_description'],
-        'unit'     => 'shipping',
-        'quantity' => 1,
-        'price'    => $orderInfo['shipping_amount'],
-        'currencyId' => $orderInfo['order_currency_code']
-      );
-    } else {
+    $SI_shipping = array(
+      'name'     => $orderInfo['shipping_description'],
+      'unit'     => 'shipping',
+      'quantity' => 1,
+      'price'    => $orderInfo['shipping_amount'],
+    );
+    if ($orderInfo['shipping_amount'] !== $orderInfo['shipping_incl_tax']) {
       $taxPrice = intval($orderInfo['shipping_incl_tax']);
       $shipPrice = intval($orderInfo['shipping_amount']);
       if ($taxPrice > $shipPrice) {
         $shippingTaxRate = ($taxPrice / $shipPrice) -1;
-        $SI_products_data[] = array(
-          'name'     => $orderInfo['shipping_description'],
-          'unit'     => 'shipping',
-          'quantity' => 1,
-          'price'    => $orderInfo['shipping_amount'],
-          'currencyId' => $orderInfo['order_currency_code'],
-          '_documentItemTaxes' => array(array('rate' => $shippingTaxRate))
-        );
-      } else {
-        $SI_products_data[] = array(
-          'name'     => $orderInfo['shipping_description'],
-          'unit'     => 'shipping',
-          'quantity' => 1,
-          'price'    => $shipPrice,
-          'currencyId' => $orderInfo['order_currency_code']
-        );
+
+        $SI_shipping['_documentItemTaxes'] = array(array('rate' => $shippingTaxRate));
       }
     }
+    if ($orderInfo['shipping_discount_amount'] !== '0.0000') {
+      $SI_shipping['discountIsAmount'] = true;
+      $SI_shipping['discount'] = $orderInfo['shipping_discount_amount'];
+      // $SI_shipping['discount'] = '25.5';
+    }
+
+    $SI_products_data[] = $SI_shipping;
   }
 
   $order_data = array(
@@ -127,10 +126,11 @@ function generateApolloDocument($type, $orderData, $items) {
     $orderData->setData('apollo_invoice_number', $document_number)->save();
     $orderData->setData('apollo_invoice_sent', false)->save();
 
+
     Spaceinvoices\Payments::create($document_id, array( // mark invoice as paid
       "type" => "other",
       "date" => date("Y-m-d"),
-      "amount" => $orderData['grand_total'],
+      "amount" => round(floatval($orderData['grand_total']),2),
       "note" => $paymentInfo['additional_information']['method_title']
     ));
 

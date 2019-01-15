@@ -35,6 +35,11 @@ class Custom extends \Magento\Backend\Block\Template
     $order = $this->orderRepository->get($orderId);
     $itemsData = $order->getAllItems();
 
+    $this->paid = 'false';
+    if ($order['total_paid'] != null) {
+      $this->paid = 'true';
+    }
+
     //get county by id
     $country = $this->_countryFactory->create()->loadByCode($order->getBillingAddress()->getData()['country_id']);
     $order['country'] = $country->getName();
