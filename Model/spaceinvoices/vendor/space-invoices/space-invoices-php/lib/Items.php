@@ -21,4 +21,3 @@ class Items extends ApiResource {
   }
 
 }
-?>

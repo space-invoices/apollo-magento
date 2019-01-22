@@ -22,4 +22,3 @@ include(dirname(__FILE__) . '/lib/Organizations.php');
 include(dirname(__FILE__) . '/lib/Payments.php');
 include(dirname(__FILE__) . '/lib/Recurrences.php');
 include(dirname(__FILE__) . '/lib/Taxes.php');
-?>

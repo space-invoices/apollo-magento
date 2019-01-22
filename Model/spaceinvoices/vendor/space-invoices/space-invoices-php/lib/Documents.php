@@ -36,4 +36,3 @@ class Documents extends ApiResource {
     return parent::_PDF("/".static::path."/".$documentId."/pdf", $lang)->body;
   }
 }
-?>

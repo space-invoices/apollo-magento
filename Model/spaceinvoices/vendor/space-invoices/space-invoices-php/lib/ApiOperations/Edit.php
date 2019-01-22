@@ -13,4 +13,3 @@ trait Edit
     return parent::_PUT("/".static::path."/".$id, $data)->body;
   }
 }
-?>

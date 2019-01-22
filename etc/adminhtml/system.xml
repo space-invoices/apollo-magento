@@ -7,7 +7,7 @@
             <label>General</label>
             <tab>apollo_settings</tab>
             <resource>Studio404_Apollo::config_system</resource>
-            <group id="general" translate="label comment" value="1" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="general" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Tokens Options</label>
                 <comment>You can get your token and organization ID at Apollo official page. Token and organization fields are required, in order for plugin to work.</comment>
                 <field id="sandbox_mode" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">

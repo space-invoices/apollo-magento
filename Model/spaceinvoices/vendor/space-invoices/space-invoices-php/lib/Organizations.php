@@ -27,4 +27,3 @@ class Organizations extends ApiResource {
   }
 
 }
-?>

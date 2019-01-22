@@ -1,29 +1,29 @@
 <?php
 require_once __DIR__.'/spaceinvoices/vendor/autoload.php';
 
-$GLOBALS['si_organization'] = "";
-$GLOBALS['pdfs_path'] = getcwd()."/app/code/Studio404/Apollo/pdfs";
-
 function setupSI($configData) {
+  global $si_organization, $pdfs_path;
+  $pdfs_path = getcwd()."/app/code/Studio404/Apollo/pdfs";
+
   if ($configData['sandbox_mode'] === '1') {
     if (!$configData['apollo_token_sandbox'] || !$configData['apollo_organization_sandbox']) {
       return "Set Apollo sandbox data!";
     }
     Spaceinvoices\Spaceinvoices::setMode('sandbox');
     Spaceinvoices\Spaceinvoices::setAccessToken($configData['apollo_token_sandbox']);
-    $GLOBALS['si_organization'] = $configData['apollo_organization_sandbox'];
+    $si_organization = $configData['apollo_organization_sandbox'];
   } else {
     if (!$configData['apollo_token'] || !$configData['apollo_organization']) {
       return "Set Apollo production data!";
     }
     Spaceinvoices\Spaceinvoices::setMode('production');
     Spaceinvoices\Spaceinvoices::setAccessToken($configData['apollo_token']);
-    $GLOBALS['si_organization'] = $configData['apollo_organization'];
+    $si_organization = $configData['apollo_organization'];
   }
 }
 
 function generateApolloDocument($type, $orderData, $items) {
-  $organization_id = $GLOBALS['si_organization'];
+  global $si_organization;
 
   $billingData = $orderData->getBillingAddress()->getData();
   $orderInfo = $orderData->getData();
@@ -103,7 +103,7 @@ function generateApolloDocument($type, $orderData, $items) {
     ),
     "_documentItems" => $SI_products_data
   );
-  $create = Spaceinvoices\Documents::create($organization_id, $order_data);
+  $create = Spaceinvoices\Documents::create($si_organization, $order_data);
 
   if (isset($create->error)) {
     return $create;
@@ -118,7 +118,7 @@ function generateApolloDocument($type, $orderData, $items) {
     "id" => $document_id,
     "number" => $document_number,
     "sent" => false,
-    "apollo_url" => "https://getapollo.io/app/$organization_id/documents/view/".$document_id
+    "apollo_url" => "https://getapollo.io/app/$si_organization/documents/view/".$document_id
   );
 
   if ($type === 'invoice') {
@@ -153,37 +153,37 @@ function exists($order, $type) { // check if invoice or estimate exists
 }
 
 function getInvoice($order) {
-  $organization_id = $GLOBALS['si_organization'];
+  global $si_organization;
   if (!empty($order->getData('apollo_invoice_id'))) {
     return array(
       "type" => "invoice",
       "id" => $order->getData('apollo_invoice_id'),
       "number" => $order->getData('apollo_invoice_number'),
       "sent" => $order->getData('apollo_invoice_sent'),
-      "apollo_url" => "https://getapollo.io/app/$organization_id/documents/view/".$order->getData('apollo_invoice_id')
+      "apollo_url" => "https://getapollo.io/app/$si_organization/documents/view/".$order->getData('apollo_invoice_id')
     );
   }
   return false;
 }
 
 function getEstimate($order) {
-  $organization_id = $GLOBALS['si_organization'];
+  global $si_organization;
   if (!empty($order->getData('apollo_estimate_id'))) {
     return array(
       "type" => "estimate",
       "id" => $order->getData('apollo_estimate_id'),
       "number" => $order->getData('apollo_estimate_number'),
       "sent" => $order->getData('apollo_estimate_sent'),
-      "apollo_url" => "https://getapollo.io/app/$organization_id/documents/view/".$order->getData('apollo_estimate_id')
+      "apollo_url" => "https://getapollo.io/app/$si_organization/documents/view/".$order->getData('apollo_estimate_id')
     );
   }
   return false;
 }
 
 function getPdf($id, $number, $type) { // download PDF file and return path
-  $path = $GLOBALS['pdfs_path'];
+  global $pdfs_path;
 
-  $pdf_path = $path."/".$type." - ".$number.".pdf";
+  $pdf_path = $pdfs_path."/".$type." - ".$number.".pdf";
   if (file_exists($pdf_path)) {
     return $pdf_path;
   }
@@ -195,7 +195,7 @@ function getPdf($id, $number, $type) { // download PDF file and return path
     return "Error creating PDF";
   }
 
-  $pdf_path = $path."/".$type." - ".$number.".pdf";
+  $pdf_path = $pdfs_path."/".$type." - ".$number.".pdf";
 
   if(!file_exists(dirname($pdf_path)))
     mkdir(dirname($pdf_path), 0777, true);
@@ -208,9 +208,9 @@ function getPdf($id, $number, $type) { // download PDF file and return path
 }
 
 function viewPdf($id, $number, $type) { // show pdf
-  $path = $GLOBALS['pdfs_path'];
+  global $pdfs_path;
 
-  $pdf_path = $path."/".$type." - ".$number.".pdf";
+  $pdf_path = $pdfs_path."/".$type." - ".$number.".pdf";
   if (!file_exists($pdf_path)) {
     $pdf_path = getPdf($id, $number, $type);
   }
@@ -221,7 +221,6 @@ function viewPdf($id, $number, $type) { // show pdf
   header( 'Accept-Ranges: bytes' );
 
   readfile( $pdf_path );
-  exit;
 }
 
 function sendPdf($order, $type, $store = '', $msg = '') {
@@ -244,5 +243,3 @@ function sendPdf($order, $type, $store = '', $msg = '') {
     "message" => $msg,
   ));
 }
-
-?>

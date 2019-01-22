@@ -12,4 +12,3 @@ trait GetById
     return parent::_GET("/".static::path."/".$id)->body;
   }
 }
-?>

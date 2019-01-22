@@ -20,4 +20,3 @@ class Taxes extends ApiResource {
     return parent::_POST("/taxes/".$taxId."/taxRates", $taxRate)->body;
   }
 }
-?>

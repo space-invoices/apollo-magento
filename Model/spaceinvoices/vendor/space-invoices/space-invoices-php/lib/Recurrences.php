@@ -18,4 +18,3 @@ class Recurrences extends ApiResource {
     return parent::_POST("/documents/".$documentId."/recurrence", $data)->body;
   }
 }
-?>

@@ -13,4 +13,3 @@ class Currencies extends ApiResource {
   }
 
 }
-?>

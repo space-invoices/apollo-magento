@@ -12,4 +12,3 @@ trait Delete
     return parent::_DELETE("/".static::path."/".$id)->body;
   }
 }
-?>

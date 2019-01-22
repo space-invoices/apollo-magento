@@ -60,7 +60,9 @@ class Custom extends \Magento\Backend\Block\Template
       $this->estimateData['send_mail'] = $this->getUrl('*/*/*', ['order_id' => $orderId, 'send_mail' => 'estimate']);
     }
 
-    if($this->request->getParam('send_mail')) {
+    $pageRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+
+    if($this->request->getParam('send_mail') && !$pageRefreshed) {
       $newURL = $this->getUrl('*/*/*', ['order_id' => $orderId, 'send_mail' => 'sent']);
       $storeName = $this->invoiceHelper->getStoreName();
       $msg = $this->invoiceHelper->getMailSettings()['pdf_msg'];
@@ -68,8 +70,7 @@ class Custom extends \Magento\Backend\Block\Template
       if ($this->request->getParam('send_mail') === 'invoice') {
         $pdf = sendPdf($order, 'invoice', $storeName, $msg);
         if (isset($pdf->success) && $pdf->success === true) {
-          header('Location: '.$newURL);
-          die();
+          $this->_messageManager->addSuccess(__("PDF successfully sent to costumer."));
         } else {
           $this->_messageManager->addError(__("There was error sending email. (Error: ".$pdf->error->message.")"));
         }
@@ -77,13 +78,10 @@ class Custom extends \Magento\Backend\Block\Template
       } else if ($this->request->getParam('send_mail') === 'estimate') {
         $pdf = sendPdf($order, 'estimate', $storeName, $msg);
         if (isset($pdf->success) && $pdf->success === true) {
-          header('Location: '.$newURL);
-          die();
+          $this->_messageManager->addSuccess(__("PDF successfully sent to costumer."));
         } else {
           $this->_messageManager->addError(__("There was error sending email. (Error: ".$pdf->error->message.")"));
         }
-      } else {
-        $this->_messageManager->addSuccess(__("PDF successfully sent to costumer."));
       }
 
     } else if($this->request->getParam('viewpdf')) {
@@ -113,6 +111,5 @@ class Custom extends \Magento\Backend\Block\Template
 
 
     }
-    // var_dump($this->request->getParams());
   }
 }

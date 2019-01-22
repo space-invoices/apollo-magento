@@ -41,4 +41,3 @@ class Accounts extends ApiResource {
     return parent::_GET("/".static::path."/organizations")->body;
 	}
 }
-?>

@@ -22,4 +22,3 @@ class Clients extends ApiResource {
   }
 
 }
-?>

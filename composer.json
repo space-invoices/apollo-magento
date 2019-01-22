@@ -1,11 +1,11 @@
 {
-  "name": "space-invoices/apollo-magento",
+  "name": "studio-404/apollo-magento",
   "description": "Apollo invoices/pdf creator for Magento.",
   "type": "magento2-module",
-  "version": "1.0",
+  "version": "1.0.0",
   "license": "Apache-2.0",
   "require": {
-    "php": ">=7.0"
+    "php": ">=5.6"
   },
   "autoload": {
     "files": [
