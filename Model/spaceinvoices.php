@@ -53,6 +53,10 @@ function generateApolloDocument($type, $orderData, $items) {
       '_documentItemTaxes' => array(array('rate' => $product['tax_percent']))
       );
 
+      if ($product['sku'] !== '') {
+        $SI_product['SKU'] = $product['sku'];
+      }
+
       if ($product['discount_percent'] !== '0.0000') {
         $SI_product['discount'] = $product['discount_percent'];
       } else if ($product['discount_amount'] !== '0.0000') {
